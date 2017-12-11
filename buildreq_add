@@ -2,4 +2,6 @@
 # picked up automatically. One name per line, no whitespace.
 glib-dev
 intltool-dev
-gtk+-dev
+gtk3-dev
+curl-dev
+goocanvas-dev
