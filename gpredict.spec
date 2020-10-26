@@ -4,7 +4,7 @@
 #
 Name     : gpredict
 Version  : 2.2.1
-Release  : 9
+Release  : 10
 URL      : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Source0  : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Summary  : No detailed summary available
@@ -23,6 +23,7 @@ BuildRequires : gtk3-dev
 BuildRequires : intltool
 BuildRequires : intltool-dev
 BuildRequires : perl(XML::Parser)
+Patch1: 0001-Add-typdef-to-qth_data_type.patch
 
 %description
 Gpredict is a real time satellite tracking and orbit prediction program
@@ -73,6 +74,8 @@ man components for the gpredict package.
 
 %prep
 %setup -q -n gpredict-2.2.1
+cd %{_builddir}/gpredict-2.2.1
+%patch1 -p1
 pushd ..
 cp -a gpredict-2.2.1 buildavx2
 popd
@@ -85,14 +88,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569965464
+export SOURCE_DATE_EPOCH=1603685629
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -101,6 +104,8 @@ unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export FFLAGS="$FFLAGS -m64 -march=haswell"
+export FCFLAGS="$FCFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -109,6 +114,8 @@ unset PKG_CONFIG_PATH
 pushd ../buildavx512/
 export CFLAGS="$CFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
 export CXXFLAGS="$CXXFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
+export FFLAGS="$FFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
+export FCFLAGS="$FCFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
 export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -118,17 +125,17 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
 cd ../buildavx2;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
+make %{?_smp_mflags} check || : || :
 cd ../buildavx512;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
+make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1569965464
+export SOURCE_DATE_EPOCH=1603685629
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gpredict
-cp COPYING %{buildroot}/usr/share/package-licenses/gpredict/COPYING
+cp %{_builddir}/gpredict-2.2.1/COPYING %{buildroot}/usr/share/package-licenses/gpredict/9a13113b89f7985efe22a28b8e4ad1ace7f2b5d1
 pushd ../buildavx512/
 %make_install_avx512
 popd
@@ -235,7 +242,7 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/gpredict/COPYING
+/usr/share/package-licenses/gpredict/9a13113b89f7985efe22a28b8e4ad1ace7f2b5d1
 
 %files man
 %defattr(0644,root,root,0755)
