@@ -1,1 +1,4 @@
 0001-Add-typdef-to-qth_data_type.patch
+0002-Require-Glib-2.40-or-later.patch
+0003-Use-PKG_CONFIG-instead-of-pkg-config-to-allow-cross-.patch
+0004-Add-support-for-GooCanvas-3.patch

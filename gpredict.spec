@@ -4,7 +4,7 @@
 #
 Name     : gpredict
 Version  : 2.2.1
-Release  : 11
+Release  : 12
 URL      : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Source0  : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Summary  : No detailed summary available
@@ -15,15 +15,25 @@ Requires: gpredict-data = %{version}-%{release}
 Requires: gpredict-license = %{version}-%{release}
 Requires: gpredict-locales = %{version}-%{release}
 Requires: gpredict-man = %{version}-%{release}
+BuildRequires : automake
+BuildRequires : automake-dev
 BuildRequires : curl-dev
 BuildRequires : gettext
+BuildRequires : gettext-bin
 BuildRequires : glib-dev
 BuildRequires : goocanvas-dev
 BuildRequires : gtk3-dev
 BuildRequires : intltool
 BuildRequires : intltool-dev
+BuildRequires : libtool
+BuildRequires : libtool-dev
+BuildRequires : m4
 BuildRequires : perl(XML::Parser)
+BuildRequires : pkg-config-dev
 Patch1: 0001-Add-typdef-to-qth_data_type.patch
+Patch2: 0002-Require-Glib-2.40-or-later.patch
+Patch3: 0003-Use-PKG_CONFIG-instead-of-pkg-config-to-allow-cross-.patch
+Patch4: 0004-Add-support-for-GooCanvas-3.patch
 
 %description
 Gpredict is a real time satellite tracking and orbit prediction program
@@ -76,6 +86,9 @@ man components for the gpredict package.
 %setup -q -n gpredict-2.2.1
 cd %{_builddir}/gpredict-2.2.1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 pushd ..
 cp -a gpredict-2.2.1 buildavx2
 popd
@@ -88,7 +101,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1603685629
+export SOURCE_DATE_EPOCH=1622852293
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -97,9 +110,8 @@ export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-%configure --disable-static
+%reconfigure --disable-static
 make  %{?_smp_mflags}
-
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
@@ -107,7 +119,7 @@ export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
 export FFLAGS="$FFLAGS -m64 -march=haswell"
 export FCFLAGS="$FCFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-%configure --disable-static
+%reconfigure --disable-static
 make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
@@ -117,9 +129,10 @@ export CXXFLAGS="$CXXFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
 export FFLAGS="$FFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
 export FCFLAGS="$FCFLAGS -m64 -march=skylake-avx512 -mprefer-vector-width=512"
 export LDFLAGS="$LDFLAGS -m64 -march=skylake-avx512"
-%configure --disable-static
+%reconfigure --disable-static
 make  %{?_smp_mflags}
 popd
+
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
@@ -132,7 +145,7 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1603685629
+export SOURCE_DATE_EPOCH=1622852293
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gpredict
 cp %{_builddir}/gpredict-2.2.1/COPYING %{buildroot}/usr/share/package-licenses/gpredict/9a13113b89f7985efe22a28b8e4ad1ace7f2b5d1
