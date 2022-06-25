@@ -4,7 +4,7 @@
 #
 Name     : gpredict
 Version  : 2.2.1
-Release  : 18
+Release  : 19
 URL      : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Source0  : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Summary  : No detailed summary available
@@ -111,7 +111,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656035928
+export SOURCE_DATE_EPOCH=1656117889
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -155,7 +155,7 @@ cd ../buildavx512;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1656035928
+export SOURCE_DATE_EPOCH=1656117889
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/gpredict
 cp %{_builddir}/gpredict-2.2.1/COPYING %{buildroot}/usr/share/package-licenses/gpredict/9a13113b89f7985efe22a28b8e4ad1ace7f2b5d1
