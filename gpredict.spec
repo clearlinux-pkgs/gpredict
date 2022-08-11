@@ -4,7 +4,7 @@
 #
 Name     : gpredict
 Version  : 2.2.1
-Release  : 19
+Release  : 20
 URL      : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Source0  : https://github.com/csete/gpredict/releases/download/v2.2.1/gpredict-2.2.1.tar.bz2
 Summary  : No detailed summary available
